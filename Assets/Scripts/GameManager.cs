@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -17,8 +18,22 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-
+        StartCoroutine(StartCountDown());
     }
+
+    public float countdownDuration = 3f;
+    IEnumerator StartCountDown()
+    {
+        float timer = countdownDuration;
+        while (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+    }
+
+
+
 
     public void Shoot(float posX, float posY, float wings)
     {

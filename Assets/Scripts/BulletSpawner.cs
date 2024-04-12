@@ -1,7 +1,5 @@
 
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BulletSpawner : MonoBehaviour
@@ -10,7 +8,7 @@ public class BulletSpawner : MonoBehaviour
 
     // Start is called before the first frame update
     public static BulletSpawner SharedInstance;
-    public List<GameObject> pooledObjects;
+    private List<GameObject> pooledObjects;
     [SerializeField] private GameObject objectToPool;
     [SerializeField] private int amountToPool = 21;
 
