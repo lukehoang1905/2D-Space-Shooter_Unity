@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 
@@ -9,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 3f;
     private readonly float nozzle = 0.5f;
     float minX, maxX, minY, maxY;
-
+    float wings = 0.5f;
     [SerializeField] private float horizontalModifier = 1.3f;
     // Start is called before the first frame update
     void Start()
@@ -25,29 +26,9 @@ public class PlayerController : MonoBehaviour
         Movement();
         if (Input.GetButtonDown("Fire1"))
         {
-            if (GameManager.bulletType == GameManager.BulletType.Triple)
-            {
-                for (int i = -1; i < 2; i++)
-                {
-                    float wings = i * 0.5f;
-                    GameObject bullet = BulletSpawner.SharedInstance.GetPooledObject();
-                    if (bullet != null)
-                    {
-                        bullet.SetActive(true);
-                        bullet.transform.position = new Vector2(gameObject.transform.position.x + wings, gameObject.transform.position.y + nozzle);
-                    }
-
-                }
-            }
-            else
-            {
-                GameObject bullet = BulletSpawner.SharedInstance.GetPooledObject();
-                if (bullet != null)
-                {
-                    bullet.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + nozzle);
-                    bullet.SetActive(true);
-                }
-            }
+            float posX = gameObject.transform.position.x;
+            float posY = gameObject.transform.position.y;
+            GameManager.GameInstance.Shoot(posX, posY + nozzle, wings);
         }
     }
 

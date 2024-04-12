@@ -1,24 +1,58 @@
+
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager GameInstance { get; private set; }
-    public static BulletType bulletType;
+    [SerializeField] BulletType bulletType;
+    Vector2 _destination, _origin;
     void Awake()
     {
         GameInstance = this;
     }
     private void Start()
     {
-        bulletType = BulletType.Triple;
+        bulletType = BulletType.Single;
     }
     private void Update()
     {
 
     }
 
-    public void UpdateBulletType(BulletType type)
+    public void Shoot(float posX, float posY, float wings)
+    {
+        switch (bulletType)
+        {
+            case BulletType.Single:
+                _destination = Vector2.up;
+                _origin = new Vector2(posX, posY);
+                StartFireBullet(_origin, _destination);
+                break;
+            case BulletType.Triple:
+                _destination = Vector2.up;
+
+                for (int i = -1; i < 2; i++)
+                {
+                    _origin = new Vector2(posX + wings * i, posY);
+                    StartFireBullet(_origin, _destination);
+                }
+                break;
+            case BulletType.Fan:
+                float bulletAngle = .5f;
+                for (int i = -1; i < 2; i++)
+                {
+                    _destination = new Vector2(i * bulletAngle, 4);
+                    _origin = new Vector2(posX, posY);
+                    StartFireBullet(_origin, _destination);
+                }
+                break;
+            default:
+                bulletType = BulletType.Single;
+                break;
+        }
+    }
+    public void SwitchBulletType(BulletType type)
     {
         switch (type)
         {
@@ -34,6 +68,18 @@ public class GameManager : MonoBehaviour
             default:
                 bulletType = BulletType.Single;
                 break;
+        }
+    }
+
+    private void StartFireBullet(Vector2 origin, Vector2 destination)
+    {
+        GameObject bullet = BulletSpawner.SharedInstance.GetPooledObject();
+        if (bullet != null)
+        {
+            bullet.SetActive(true);
+            BulletMover bulletMover = bullet.GetComponent<BulletMover>();
+            bullet.transform.position = origin;
+            bulletMover.SetDestination(destination);
         }
     }
 
