@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class Background_Scroller : MonoBehaviour
+public class BackgroundScroller : MonoBehaviour
 {
     public float speed = 5f;
     public Renderer meshRenderer;
