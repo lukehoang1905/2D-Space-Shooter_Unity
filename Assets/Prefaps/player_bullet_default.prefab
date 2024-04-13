@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7465747600108062871}
   - component: {fileID: 6174636954871875007}
+  - component: {fileID: -2791474604027224516}
   - component: {fileID: -2678429588596116334}
   m_Layer: 0
   m_Name: player_bullet_default
@@ -85,6 +86,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &-2791474604027224516
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5057715069844950567}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.18
 --- !u!114 &-2678429588596116334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,3 +114,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61257aa3460694ed79fbfb6ce45c9f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _angle: 0.5

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 
@@ -16,19 +15,21 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         CircleCollider2D collider = GetComponent<CircleCollider2D>();
-        FindBoundaries(collider);
+        // Set up boundaries
+        Dictionary<string, float> boundaries = Utils.Boundaries.FindBoundaries(collider);
+        minX = boundaries["minX"];
+        maxX = boundaries["maxX"];
+        minY = boundaries["minY"];
+        maxY = boundaries["maxY"];
     }
 
     // Update is called once per frame
     private void OnTriggerEnter2D(Collider2D other)
     {
-
         if (other.gameObject.CompareTag("PowerUp"))
         {
-            Debug.Log("hit");
-            GameManager.BulletType bulletType;
-            Enum.TryParse(other.gameObject.name, out bulletType);
-            GameManager.GameInstance.SwitchBulletType(bulletType);
+            GameManager.GameInstance.SwitchBulletType(other.gameObject.name);
+            other.gameObject.SetActive(false);
         }
     }
 
@@ -41,16 +42,10 @@ public class PlayerController : MonoBehaviour
             float posY = gameObject.transform.position.y;
             GameManager.GameInstance.Shoot(posX, posY + nozzle, wings);
         }
+
     }
 
-    void FindBoundaries(CircleCollider2D collider)
-    {
-        Camera mainCamera = Camera.main;
-        minX = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).x + collider.radius;
-        maxX = mainCamera.ViewportToWorldPoint(new Vector3(1, 0, 0)).x - collider.radius;
-        minY = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y + collider.radius;
-        maxY = mainCamera.ViewportToWorldPoint(new Vector3(0, 1, 0)).y - collider.radius;
-    }
+
     void Movement()
     {
         float deltaY = Input.GetAxis("Vertical") * Time.deltaTime * speed;

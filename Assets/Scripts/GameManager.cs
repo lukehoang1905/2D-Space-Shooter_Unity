@@ -1,5 +1,5 @@
 
-using System.Collections;
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager GameInstance { get; private set; }
     [SerializeField] BulletType bulletType;
+    int ammo;
     Vector2 _destination, _origin;
     void Awake()
     {
@@ -15,43 +16,28 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         bulletType = BulletType.Single;
+        ammo = 5;
     }
+
     private void Update()
     {
-        StartCoroutine(StartCountDown());
+
     }
-
-    public float countdownDuration = 3f;
-    IEnumerator StartCountDown()
-    {
-        float timer = countdownDuration;
-        while (timer > 0f)
-        {
-            timer -= Time.deltaTime;
-            yield return null;
-        }
-    }
-
-
-
 
     public void Shoot(float posX, float posY, float wings)
     {
+        if (ammo <= 0) bulletType = BulletType.Single;
+
         switch (bulletType)
         {
-            case BulletType.Single:
-                _destination = Vector2.up;
-                _origin = new Vector2(posX, posY);
-                StartFireBullet(_origin, _destination);
-                break;
             case BulletType.Triple:
                 _destination = Vector2.up;
-
                 for (int i = -1; i < 2; i++)
                 {
                     _origin = new Vector2(posX + wings * i, posY);
                     StartFireBullet(_origin, _destination);
                 }
+                ammo--;
                 break;
             case BulletType.Fan:
                 float bulletAngle = .5f;
@@ -61,31 +47,38 @@ public class GameManager : MonoBehaviour
                     _origin = new Vector2(posX, posY);
                     StartFireBullet(_origin, _destination);
                 }
+                ammo--;
                 break;
             default:
                 bulletType = BulletType.Single;
-                break;
-        }
-    }
-    public void SwitchBulletType(BulletType type)
-    {
-        switch (type)
-        {
-            case BulletType.Single:
-                bulletType = BulletType.Single;
-                break;
-            case BulletType.Triple:
-                bulletType = BulletType.Triple;
-                break;
-            case BulletType.Fan:
-                bulletType = BulletType.Fan;
-                break;
-            default:
-                bulletType = BulletType.Single;
+                _destination = Vector2.up;
+                _origin = new Vector2(posX, posY);
+                StartFireBullet(_origin, _destination);
                 break;
         }
     }
 
+    //Todo: Fix casting to Enum
+    public void SwitchBulletType(string type)
+    {
+        switch (type)
+        {
+            case "Single":
+                bulletType = BulletType.Single;
+                break;
+            case "Triple(Clone)":
+                bulletType = BulletType.Triple;
+                ammo = 5;
+                break;
+            case "Fan(Clone)":
+                bulletType = BulletType.Fan;
+                ammo = 5;
+                break;
+            default:
+                bulletType = BulletType.Single;
+                break;
+        }
+    }
     private void StartFireBullet(Vector2 origin, Vector2 destination)
     {
         GameObject bullet = BulletSpawner.SharedInstance.GetPooledObject();
