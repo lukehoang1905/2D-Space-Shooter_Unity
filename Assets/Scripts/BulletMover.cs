@@ -35,16 +35,7 @@ public class BulletMover : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            GameObject star = StarSpawner.SharedInstance.GetPooledObject();
-            star.SetActive(true);
-            star.transform.position = other.gameObject.transform.position;
-            other.gameObject.SetActive(false);
-        }
-    }
+
     public void SetDestination(Vector2 des)
     {
         _destination = des;

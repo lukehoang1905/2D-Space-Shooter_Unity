@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class PowerUpFalling : MonoBehaviour
@@ -14,6 +13,13 @@ public class PowerUpFalling : MonoBehaviour
         minY = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            gameObject.SetActive(false);
+        }
+    }
 
     // Update is called once per frame
     void Update()

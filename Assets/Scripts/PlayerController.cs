@@ -29,7 +29,10 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("PowerUp"))
         {
             GameManager.GameInstance.SwitchBulletType(other.gameObject.name);
-            other.gameObject.SetActive(false);
+        }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            HealthBarScript.HealthInstance.UpdateHealth(-1);
         }
     }
 
@@ -42,9 +45,7 @@ public class PlayerController : MonoBehaviour
             float posY = gameObject.transform.position.y;
             GameManager.GameInstance.Shoot(posX, posY + nozzle, wings);
         }
-
     }
-
 
     void Movement()
     {

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class EnemyMover : MonoBehaviour
@@ -14,7 +13,29 @@ public class EnemyMover : MonoBehaviour
         Camera mainCamera = Camera.main;
         minY = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
     }
-
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Stars")) return;
+        // Sound
+        SoundFXManager.SharedInstance.PlayAudioName(SoundFXManager.AudioName.EnemyExplosion);
+        // Explosion
+        GameObject vfx = VFXSpawner.SharedInstance.GetPooledvfx();
+        if (vfx != null)
+        {
+            vfx.SetActive(true);
+            vfx.transform.position = gameObject.transform.position;
+            // set a time out for this to be SetActive(false) base on duration
+        }
+        // Star
+        GameObject star = StarSpawner.SharedInstance.GetPooledObject();
+        if (star != null)
+        {
+            star.SetActive(true);
+            star.transform.position = other.gameObject.transform.position;
+        }
+        // Dismount
+        gameObject.SetActive(false);
+    }
 
 
     // Update is called once per frame

@@ -6,7 +6,9 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager GameInstance { get; private set; }
+
     [SerializeField] BulletType bulletType;
+    [SerializeField] int health;
     int ammo;
     Vector2 _destination, _origin;
     void Awake()
@@ -36,6 +38,7 @@ public class GameManager : MonoBehaviour
                 {
                     _origin = new Vector2(posX + wings * i, posY);
                     StartFireBullet(_origin, _destination);
+                    SoundFXManager.SharedInstance.PlayAudioName(SoundFXManager.AudioName.BulletTriple);
                 }
                 ammo--;
                 break;
@@ -46,6 +49,7 @@ public class GameManager : MonoBehaviour
                     _destination = new Vector2(i * bulletAngle, 4);
                     _origin = new Vector2(posX, posY);
                     StartFireBullet(_origin, _destination);
+                    SoundFXManager.SharedInstance.PlayAudioName(SoundFXManager.AudioName.BulletFan);
                 }
                 ammo--;
                 break;
@@ -54,6 +58,7 @@ public class GameManager : MonoBehaviour
                 _destination = Vector2.up;
                 _origin = new Vector2(posX, posY);
                 StartFireBullet(_origin, _destination);
+                SoundFXManager.SharedInstance.PlayAudioName(SoundFXManager.AudioName.BulletSingle);
                 break;
         }
     }

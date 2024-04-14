@@ -1,24 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StarMover : MonoBehaviour
 {
-    // Start is called before the first frame update
+    float minY;
+    float speed = 1f;
     void Start()
     {
-
+        Camera mainCamera = Camera.main;
+        minY = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
     }
 
-    // Update is called once per frame
     void Update()
     {
-
+        transform.Translate(Vector2.down * speed * Time.deltaTime);
+        if (transform.position.y <= minY)
+        {
+            gameObject.SetActive(false);
+        }
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            ScoreManager.ScoreInstance.UpdateScore(1);
+            SoundFXManager.SharedInstance.PlayAudioName(SoundFXManager.AudioName.Coin);
             gameObject.SetActive(false);
         }
     }
